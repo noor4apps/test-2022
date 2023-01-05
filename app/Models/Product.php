@@ -25,7 +25,9 @@ class Product extends Model
 
     public function getTotalQuantityAttribute()
     {
-        return null;
+        return $this->units->reduce(
+            fn($totalQuantity, $unit) => $totalQuantity + $unit->pivot->amount * $unit->modifier
+        );
     }
 
     public function getImagePathAttribute()
