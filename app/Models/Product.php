@@ -20,7 +20,7 @@ class Product extends Model
 
     public function units()
     {
-        //
+        return $this->belongsToMany(Unit::class, 'product_unit')->withPivot('amount');
     }
 
     public function getTotalQuantityAttribute()
