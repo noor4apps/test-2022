@@ -53,7 +53,7 @@ class ProductController extends Controller
 
         if ($request->has('unit_id')) {
             $unitModifier = Unit::findOrfail($request->unit_id)->modifier;
-            $product->total_quantity_by_unit_id = $product->getTotalQuantityByUnitId($unitModifier);
+            $product->total_quantity_by_unit_id = $product->getTotalQuantityAttribute() / $unitModifier;
         }
 
         return $product;
