@@ -30,6 +30,13 @@ class Product extends Model
         );
     }
 
+    public function getTotalQuantityByUnitId($unitModifier)
+    {
+        return $this->units->reduce(
+            fn($totalQuantity, $unit) => $totalQuantity + $unit->pivot->amount * ($unit->modifier / $unitModifier)
+        );
+    }
+
     public function getImagePathAttribute()
     {
         return null;
