@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreImageRequest;
+use App\Http\Resources\ImageResource;
 use App\Models\Image;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ImageController extends Controller
 {
@@ -35,12 +38,26 @@ class ImageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreImageRequest $request)
     {
-        if($request->o_type == 'user')
-            $user = User::find($request->o_id);
-        if($request->o_type == 'product')
-            $product = Product::find($request->o_id);
+        if ($request->o_type == 'user') {
+            $user = User::findOrfail($request->o_id);
+            $image = $user->image()->create([
+                'path' => $request->path,
+                'description' => $request->description
+            ]);
+        }
+        if ($request->o_type == 'product') {
+            $product = Product::findOrfail($request->o_id);
+            $image = $product->image()->create([
+                'path' => $request->path,
+                'description' => $request->description
+            ]);
+        }
+
+        return (new ImageResource($image))
+            ->response()
+            ->setStatusCode(Response::HTTP_OK);
     }
 
     /**

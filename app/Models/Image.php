@@ -13,4 +13,9 @@ class Image extends Model
         'path',
         'description'
     ];
+
+    public function o()
+    {
+        return $this->morphTo();
+    }
 }

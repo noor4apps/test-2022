@@ -39,7 +39,12 @@ class Product extends Model
 
     public function getImagePathAttribute()
     {
-        return null;
+        return $this->image?->path;
+    }
+
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'o');
     }
 
 }
